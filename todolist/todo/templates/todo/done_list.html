@@ -1,28 +1,265 @@
 <html>
   <head>
-    <title>TODO 목록 앱</title>
+    <title>완료한 TODO 목록</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <style>
+        /* todo_list.html의 스타일을 그대로 가져오고 일부 수정 */
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            padding-top: 2rem;
+            max-width: 1200px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #eee;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .todo-list-container {
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .todo-list-container.with-details {
+            flex: 0 0 60%;
+        }
+
+        .list-group-item {
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background-color: white;
+        }
+
+        .list-group-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .todo-content {
+            padding: 10px;
+            width: 100%;
+        }
+
+        .todo-main-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            font-size: 0.85em;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .todo-title {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .important-stars {
+            color: #ffd700;
+            font-size: 0.9em;
+        }
+
+        .deadline {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .details-panel {
+            flex: 0 0 38%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .details-panel.show {
+            display: block;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 완료 목록 전용 스타일 */
+        .completed-date {
+            font-size: 0.85em;
+            color: #666;
+            margin-left: 10px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
   </head>
   <body>
-  <div class="container">
-    <h1>DONE 목록</h1>
-    <p>
-      <a href="{% url 'todo_list' %}" class="btn btn-primary">홈으로</a>
-    </p>
-    <ul class="list-group">
-      {% for done in dones %}
-      <li class="list-group-item">
-        <a href="{% url 'todo_detail' pk=done.pk %}">{{ done.title }}</a>
-        {% if done.important %}
-          <span class="badge badge-danger">!</span>
-        {% endif %}
-      </li>
-      {% endfor %}
-    </ul>
+    <div class="container">
+      <div class="header-container">
+        <h1><i class="bi bi-check2-circle"></i> 완료한 TODO 목록</h1>
+        <div class="action-group">
+          <a href="{% url 'todo_list' %}" class="nav-btn">
+            <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
+          </a>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="todo-list-container">
+          {% if dones %}
+          <ul class="list-group">
+            {% for todo in dones %}
+            <li class="list-group-item" data-id="{{ todo.pk }}">
+              <div class="todo-item">
+                <div class="todo-content">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="todo-main-content">
+                      <span class="todo-title">{{ todo.title }}</span>
+                      {% if todo.important %}
+                        <span class="important-stars">
+                          {% for i in ''|ljust:todo.important %}★{% endfor %}
+                        </span>
+                      {% endif %}
+                      <span class="completed-date">
+                        <i class="bi bi-check2-circle"></i> 
+                        {{ todo.completed_at|date:"Y-m-d H:i" }} 완료
+                      </span>
+                      {% if todo.deadline %}
+                        <span class="deadline">
+                          <i class="bi bi-clock"></i> 
+                          {{ todo.deadline|date:"Y-m-d H:i" }}
+                        </span>
+                      {% endif %}
+                    </div>
+                    <div class="action-buttons">
+                      <button onclick="toggleComplete({{ todo.pk }})" 
+                              class="action-btn btn btn-outline-success btn-sm" title="미완료로 변경">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                      </button>
+                      <button onclick="location.href='{% url 'todo_delete' pk=todo.pk %}'" 
+                              class="action-btn btn btn-outline-danger btn-sm" title="삭제">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                      <i class="bi bi-chevron-right todo-arrow" onclick="showDetails('{{ todo.pk }}')"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <div class="alert alert-info">
+            완료한 TODO 항목이 없습니다.
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="details-panel">
+          <!-- 상세 정보가 여기에 동적으로 로드됩니다 -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+        function toggleComplete(todoId) {
+            fetch(`/todo/done/${todoId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(() => {
+                location.reload();
+            });
+        }
+
+        // todo_list.html의 showDetails 함수와 기타 필요한 스크립트 복사
+        function showDetails(todoId) {
+            const listContainer = document.querySelector('.todo-list-container');
+            const detailsPanel = document.querySelector('.details-panel');
+            const arrow = event.target;
+            
+            if (detailsPanel.classList.contains('show') && detailsPanel.dataset.todoId === todoId) {
+                listContainer.classList.remove('with-details');
+                detailsPanel.classList.remove('show');
+                arrow.classList.remove('rotated');
+                return;
+            }
+
+            fetch(`/todo/detail/${todoId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    detailsPanel.innerHTML = `
+                        <h3>${data.title}</h3>
+                        <div class="detail-content">
+                            <p><strong>설명:</strong><br>${data.description || '설명 없음'}</p>
+                            <p><strong>생성일:</strong><br>${data.created}</p>
+                            <p><strong>완료일:</strong><br>${data.completed_at}</p>
+                            <p><strong>마감기한:</strong><br>${data.deadline || '없음'}</p>
+                            <p><strong>중요도:</strong><br>${'★'.repeat(data.important)}</p>
+                        </div>
+                    `;
+                    
+                    listContainer.classList.add('with-details');
+                    detailsPanel.classList.add('show');
+                    detailsPanel.dataset.todoId = todoId;
+                    
+                    document.querySelectorAll('.todo-arrow').forEach(a => a.classList.remove('rotated'));
+                    arrow.classList.add('rotated');
+                });
+        }
+    </script>
   </body>
-  </div>
 </html>

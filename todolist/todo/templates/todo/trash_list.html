@@ -1,123 +1,129 @@
 <html>
   <head>
-    <title>휴지통 - TODO 목록 앱</title>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
+    <title>휴지통</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <style>
-      .todo-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-      }
-      .deleted-at {
-        font-size: 0.9em;
-        color: #666;
-      }
-      .important-stars {
-        color: #ffd700;
-      }
-      .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-      .todo-details {
-        display: none;
-        margin-top: 10px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-radius: 4px;
-      }
-      .todo-details.show {
-        display: block;
-      }
-      .detail-label {
-        font-weight: bold;
-        color: #666;
-      }
+        /* todo_list.html의 스타일을 가져오고 일부 수정 */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            padding-top: 2rem;
+            max-width: 1200px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 2px solid #eee;
+        }
+
+        .list-group-item {
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            background-color: white;
+        }
+
+        .list-group-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .deleted-date {
+            font-size: 0.85em;
+            color: #dc3545;
+            margin-left: 10px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            font-size: 0.85em;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #4A90E2;
+            border: 1px solid #4A90E2;
+        }
+
+        .nav-btn:hover {
+            background-color: #4A90E2;
+            color: white;
+            text-decoration: none;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
     </style>
   </head>
   <body>
-  <div class="container">
-    <div class="header-container">
-      <h1>
-        <i class="bi bi-trash"></i> 휴지통
-      </h1>
-      <a href="{% url 'todo_list' %}" class="btn btn-secondary">
-        <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
-      </a>
-    </div>
-    
-    {% if deleted_todos %}
-    <ul class="list-group">
-      {% for todo in deleted_todos %}
-      <li class="list-group-item">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="todo-info" onclick="toggleDetails('todo-{{ todo.pk }}')">
-            <span>{{ todo.title }}</span>
-            {% if todo.important %}
-              <span class="important-stars">
-                {% for i in ''|ljust:todo.important %}★{% endfor %}
-              </span>
-            {% endif %}
-            <span class="deleted-at">
-              <i class="bi bi-clock-history"></i> 
-              {{ todo.deleted_at|date:"Y-m-d H:i" }} 삭제됨
-            </span>
-            <i class="bi bi-chevron-down"></i>
-          </div>
-          <a href="{% url 'todo_restore' pk=todo.pk %}" class="btn btn-outline-success">
-            <i class="bi bi-arrow-counterclockwise"></i> 복원
-          </a>
+    <div class="container">
+        <div class="header-container">
+            <h1><i class="bi bi-trash"></i> 휴지통</h1>
+            <a href="{% url 'todo_list' %}" class="nav-btn">
+                <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
+            </a>
         </div>
-        <div id="todo-{{ todo.pk }}" class="todo-details">
-          <div class="row">
-            <div class="col-md-6">
-              <p><span class="detail-label">설명:</span><br>
-              {{ todo.description|default:"설명 없음"|linebreaks }}</p>
-            </div>
-            <div class="col-md-6">
-              <p><span class="detail-label">생성일:</span><br>
-              {{ todo.created|date:"Y-m-d H:i" }}</p>
-              
-              {% if todo.deadline %}
-              <p><span class="detail-label">마감기한:</span><br>
-              {{ todo.deadline|date:"Y-m-d H:i" }}</p>
-              {% endif %}
-              
-              <p><span class="detail-label">중요도:</span><br>
-              <span class="important-stars">
-                {% for i in ''|ljust:todo.important %}★{% endfor %}
-              </span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <div class="alert alert-info">
-      휴지통이 비어있습니다.
-    </div>
-    {% endif %}
-  </div>
 
-  <script>
-    function toggleDetails(todoId) {
-      const details = document.getElementById(todoId);
-      details.classList.toggle('show');
-      
-      // 화살표 아이콘 회전
-      const arrow = details.previousElementSibling.querySelector('.bi-chevron-down');
-      arrow.style.transform = details.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
-      arrow.style.transition = 'transform 0.3s';
-    }
-  </script>
+        {% if todos %}
+        <ul class="list-group">
+            {% for todo in todos %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="todo-content">
+                        <span class="todo-title">{{ todo.title }}</span>
+                        {% if todo.important %}
+                            <span class="important-stars">
+                                {% for i in ''|ljust:todo.important %}★{% endfor %}
+                            </span>
+                        {% endif %}
+                        <span class="deleted-date">
+                            <i class="bi bi-calendar-x"></i> 
+                            {{ todo.deleted_at|date:"Y-m-d H:i" }} 삭제됨
+                        </span>
+                    </div>
+                    <div class="action-buttons">
+                        <button onclick="location.href='{% url 'todo_restore' pk=todo.pk %}'" 
+                                class="action-btn btn btn-outline-primary btn-sm" title="복원">
+                            <i class="bi bi-arrow-counterclockwise"></i> 복원
+                        </button>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-message">
+            <i class="bi bi-trash" style="font-size: 2rem; color: #6c757d;"></i>
+            <p class="mt-3">휴지통이 비어있습니다.</p>
+        </div>
+        {% endif %}
+    </div>
   </body>
 </html>

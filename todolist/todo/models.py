@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Todo(models.Model):
     title = models.CharField(max_length=100)
@@ -6,13 +7,14 @@ class Todo(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(null=True, blank=True)
     complete = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
     important = models.IntegerField(default=0)
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
     order = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ['order']
+        ordering = ['order', 'created']
 
     def __str__(self):
         return self.title

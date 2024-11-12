@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Todo
 from .forms import TodoForm
 from django.db.models import Case, When, Value, IntegerField
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 import json
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login
+from django.urls import reverse
 
 
 def todo_list(request):
@@ -27,7 +28,7 @@ def todo_list(request):
             '-important'
         )
     elif sort == 'created':
-        todos = todos.order_by('-created')
+        todos = todos.order_by('created')
     else:
         todos = todos.order_by('order', 'created')
     
@@ -54,22 +55,35 @@ def done_list(request):
 
 def todo_done(request, pk):
     todo = Todo.objects.get(id=pk)
-    todo.complete = True
+    todo.complete = not todo.complete
+    todo.completed_at = timezone.now() if todo.complete else None
     todo.save()
-    return redirect('todo_list')
+    
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return HttpResponseRedirect(referer)
+    return HttpResponseRedirect(reverse('todo_list'))
 
 
 def todo_edit(request, pk):
-    todo = Todo.objects.get(id=pk)
+    todo = get_object_or_404(Todo, pk=pk)
+    
     if request.method == "POST":
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
-            todo = form.save(commit=False)
-            todo.save()
+            todo = form.save()
             return redirect('todo_list')
     else:
+        # 기존 데이터로 폼을 초기화
         form = TodoForm(instance=todo)
-    return render(request, 'todo/todo_post.html', {'form': form})
+        # datetime-local 입력을 위한 형식 변환
+        if todo.deadline:
+            form.initial['deadline'] = todo.deadline.strftime('%Y-%m-%dT%H:%M')
+    
+    return render(request, 'todo/todo_edit.html', {
+        'form': form,
+        'todo': todo
+    })
 
 
 # 삭제 뷰 새로 추가
@@ -82,8 +96,9 @@ def todo_delete(request, pk):
 
 
 def trash_list(request):
-    deleted_todos = Todo.objects.filter(is_deleted=True)
-    return render(request, 'todo/trash_list.html', {'deleted_todos': deleted_todos})
+    # is_deleted가 True인 항목만 가져오기
+    todos = Todo.objects.filter(is_deleted=True).order_by('-deleted_at')
+    return render(request, 'todo/trash_list.html', {'todos': todos})
 
 
 def todo_restore(request, pk):
@@ -131,6 +146,7 @@ def todo_detail_json(request, pk):
         'title': todo.title,
         'description': todo.description,
         'created': todo.created.strftime('%Y-%m-%d %H:%M'),
+        'completed_at': todo.completed_at.strftime('%Y-%m-%d %H:%M') if todo.completed_at else None,
         'deadline': todo.deadline.strftime('%Y-%m-%d %H:%M') if todo.deadline else None,
         'important': todo.important,
     }
