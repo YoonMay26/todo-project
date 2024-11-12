@@ -50,3 +50,20 @@ def todo_edit(request, pk):
     else:
         form = TodoForm(instance=todo)
     return render(request, 'todo/todo_post.html', {'form': form})
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import CustomUserCreationForm
+
+def user_add(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('todo_list')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'todo/user_add.html', {'form': form})
