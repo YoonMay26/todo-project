@@ -6,6 +6,8 @@ from django.db.models import Case, When, Value, IntegerField
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from .forms import CustomUserCreationForm
+from django.contrib.auth import login
 
 
 def todo_list(request):
@@ -70,7 +72,6 @@ def todo_edit(request, pk):
     return render(request, 'todo/todo_post.html', {'form': form})
 
 
-<<<<<<< HEAD
 # 삭제 뷰 새로 추가
 def todo_delete(request, pk):
     todo = Todo.objects.get(id=pk)
@@ -134,11 +135,8 @@ def todo_detail_json(request, pk):
         'important': todo.important,
     }
     return JsonResponse(data)
-=======
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+
 
 def user_add(request):
     if request.method == 'POST':
@@ -150,4 +148,3 @@ def user_add(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'todo/user_add.html', {'form': form})
->>>>>>> b8620c29d89f30200f4c9efdfd244a481ea31d57

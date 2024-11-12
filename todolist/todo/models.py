@@ -3,11 +3,7 @@ from django.db import models
 class Todo(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-<<<<<<< HEAD
     created = models.DateTimeField(auto_now_add=True)
-=======
-    created = models.DateTimeField(auto_now_add=True)  
->>>>>>> b8620c29d89f30200f4c9efdfd244a481ea31d57
     deadline = models.DateTimeField(null=True, blank=True)
     complete = models.BooleanField(default=False)
     important = models.IntegerField(default=0)
