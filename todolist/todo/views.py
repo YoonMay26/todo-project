@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from .models import Todo
 from .forms import TodoForm
 
@@ -18,6 +19,7 @@ def todo_post(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             todo = form.save(commit=False)
+            todo.created = timezone.now()
             todo.save()
             return redirect('todo_list')
     else:
