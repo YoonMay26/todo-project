@@ -119,3 +119,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/todo/'  # 로그인 성공 후 리다이렉트할 URL
+LOGIN_URL = '/'  # 로그인 페이지 URL
+
+AUTH_USER_MODEL = 'todo.CustomUser'
+
+
+import os
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
