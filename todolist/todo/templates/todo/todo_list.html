@@ -679,9 +679,15 @@
         padding: 1rem 0;
       }
 
-      .nav-buttons-container {
+      .top-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nav-buttons {
         display: flex;
         justify-content: flex-end;
+        gap: 8px;
         margin-bottom: 1.5rem;
       }
 
@@ -689,11 +695,6 @@
         margin: 0;
         font-size: 1.8rem;
         color: #333;
-      }
-
-      .header-buttons {
-        display: flex;
-        gap: 8px;
       }
 
       .nav-btn {
@@ -731,30 +732,26 @@
   <body>
   <div class="container-fluid">
     <div class="top-nav">
-      <a href="{% url 'logout' %}" class="logout-btn">
-        <i class="bi bi-box-arrow-right"></i>
-        로그아웃
-      </a>
-    </div>
-
-    <div class="header-container">
-      <div class="title-section">
-        <h1>나의 Quest 목록</h1>
-        <div class="header-buttons">
-          <a href="{% url 'todo_post' %}" class="nav-btn">
-            <i class="bi bi-plus-circle-fill" style="color: #4A90E2;"></i> 새 Quest
-          </a>
-          <a href="{% url 'done_list' %}" class="nav-btn">
-            <i class="bi bi-check-circle" style="color: #28a745;"></i> 완료한 Quest
-          </a>
-          <a href="{% url 'trash_list' %}" class="nav-btn">
-            <i class="bi bi-trash" style="color: #dc3545;"></i> 미수락 Quest
-          </a>
-          <a href="{% url 'todo_stats' %}" class="nav-btn">
-            <i class="bi bi-trophy" style="color: #f39c12;"></i> Achievement
-          </a>
-        </div>
+      <h1>나의 Quest 목록</h1>
+      <div class="top-buttons">
+        <a href="{% url 'todo_stats' %}" class="nav-btn">
+          <i class="bi bi-trophy" style="color: #f39c12;"></i> Achievement
+        </a>
+        <a href="{% url 'logout' %}" class="nav-btn">
+          <i class="bi bi-box-arrow-right"></i> 로그아웃
+        </a>
       </div>
+    </div>
+    <div class="nav-buttons">
+      <a href="{% url 'todo_post' %}" class="nav-btn">
+        <i class="bi bi-plus-circle-fill" style="color: #4A90E2;"></i> 새 Quest
+      </a>
+      <a href="{% url 'done_list' %}" class="nav-btn">
+        <i class="bi bi-check-circle" style="color: #28a745;"></i> 완료한 Quest
+      </a>
+      <a href="{% url 'trash_list' %}" class="nav-btn">
+        <i class="bi bi-trash" style="color: #dc3545;"></i> 미수락 Quest
+      </a>
     </div>
   </div>
 

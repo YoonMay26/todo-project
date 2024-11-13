@@ -281,7 +281,14 @@ def todo_stats(request):
 def profile_view(request):
     return render(request, 'todo/profile.html', {'user': request.user})
 
-
+@login_required
+def profile(request):
+    user = request.user
+    context = {
+        'user': user,
+        'character_image': user.character_image,  # character_image 프로퍼티 사용
+    }
+    return render(request, 'todo/profile.html', context)
 
 @login_required
 def profile_edit(request):
