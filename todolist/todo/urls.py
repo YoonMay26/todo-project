@@ -22,4 +22,6 @@ urlpatterns = [
     redirect_authenticated_user=True,
     extra_context={'show_register_link': True}
         ), name='login'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
 ]
