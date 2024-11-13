@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.todo_list, name='todo_list'),
@@ -14,5 +15,10 @@ urlpatterns = [
     path('bulk-delete/', views.bulk_delete, name='bulk_delete'),
     path('detail/<int:pk>/', views.todo_detail_json, name='todo_detail_json'),
     path('user_add/', views.user_add, name='user_add'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('login/', auth_views.LoginView.as_view(
+    template_name='todo/login.html',
+    redirect_authenticated_user=True,
+    extra_context={'show_register_link': True}
+        ), name='login'),
 ]
-

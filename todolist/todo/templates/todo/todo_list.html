@@ -390,6 +390,16 @@
         font-size: 0.85em;
         color: #6c757d;
       }
+
+      .logout-btn {
+        background-color: #fff;
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+      .logout-btn:hover {
+        background-color: #dc3545;
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -397,15 +407,24 @@
     <div class="header-container">
       <h1>TODO 목록 앱</h1>
       <div class="action-group">
-        <a href="{% url 'todo_post' %}" class="add-todo-btn nav-btn">
-          <i class="bi bi-plus-circle"></i> 새로운 TODO
-        </a>
-        <a href="{% url 'done_list' %}" class="done-btn nav-btn">
-          <i class="bi bi-check2-circle"></i> 완료한 목록
-        </a>
-        <a href="{% url 'trash_list' %}" class="trash-btn nav-btn">
-          <i class="bi bi-trash"></i> 휴지통
-        </a>
+          <a href="{% url 'todo_post' %}" class="add-todo-btn nav-btn">
+              <i class="bi bi-plus-circle"></i> 새로운 TODO
+          </a>
+          <a href="{% url 'done_list' %}" class="done-btn nav-btn">
+              <i class="bi bi-check2-circle"></i> 완료한 목록
+          </a>
+          <a href="{% url 'trash_list' %}" class="trash-btn nav-btn">
+              <i class="bi bi-trash"></i> 휴지통
+          </a>
+          <form method="post" action="{% url 'logout' %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="nav-btn logout-btn">
+                  <i class="bi bi-box-arrow-right"></i> 로그아웃
+              </button>
+          </form>
+      </div>
+  </div>
+</div>
       </div>
     </div>
 

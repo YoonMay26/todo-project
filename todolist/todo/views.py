@@ -7,8 +7,9 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 import json
 from .forms import CustomUserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.urls import reverse
+from django.contrib import messages
 
 
 def todo_list(request):
@@ -153,14 +154,29 @@ def todo_detail_json(request, pk):
     return JsonResponse(data)
 
 
-
 def user_add(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('todo_list')
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'계정이 생성되었습니다. {username}님 환영합니다!')
+            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'todo/user_add.html', {'form': form})
+
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # 로그인 후 리다이렉트할 페이지
+        else:
+            # 로그인 실패 메시지 추가
+            return render(request, 'login.html', {'error': '아이디 또는 비밀번호가 올바르지 않습니다.'})
+    return render(request, 'login.html')

@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         .character-selection img {
-            width: 75px;  /* 너비를 75px로 설정 (3:4 비율 유지) */
-            height: 100px;  /* 높이를 100px로 설정 (3:4 비율 유지) */
-            object-fit: cover;  /* 이미지가 컨테이너를 채우도록 설정 */
+            width: 75px;
+            height: 100px;
+            object-fit: cover;
             margin: 10px;
             cursor: pointer;
         }
@@ -27,19 +27,34 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_nickname">별명:</label>
-                {{ form.nickname }}
+                {{ form.nickname|add_class:"form-control" }}
+                {% if form.nickname.errors %}
+                    <small class="text-danger">{{ form.nickname.errors|join:", " }}</small>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_username">아이디:</label>
-                {{ form.username }}
+                {{ form.username|add_class:"form-control" }}
+                {% if form.username.errors %}
+                    <small class="text-danger">{{ form.username.errors|join:", " }}</small>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_password1">비밀번호:</label>
-                {{ form.password1 }}
+                {{ form.password1|add_class:"form-control" }}
+                {% if form.password1.errors %}
+                    <small class="text-danger">{{ form.password1.errors|join:", " }}</small>
+                {% endif %}
+                {% if form.password1.help_text %}
+                    <small class="form-text text-muted">{{ form.password1.help_text|safe }}</small>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="id_password2">비밀번호 확인:</label>
-                {{ form.password2 }}
+                {{ form.password2|add_class:"form-control" }}
+                {% if form.password2.errors %}
+                    <small class="text-danger">{{ form.password2.errors|join:", " }}</small>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label>캐릭터 선택:</label>
@@ -51,6 +66,9 @@
                         </label>
                     {% endfor %}
                 </div>
+                {% if form.character.errors %}
+                    <small class="text-danger">{{ form.character.errors|join:", " }}</small>
+                {% endif %}
             </div>
             <button type="submit" class="btn btn-primary">회원가입</button>
         </form>
