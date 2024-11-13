@@ -109,9 +109,11 @@
                         </span>
                     </div>
                     <div class="action-buttons">
-                        <button onclick="location.href='{% url 'todo_restore' pk=todo.pk %}'" 
-                                class="action-btn btn btn-outline-primary btn-sm" title="수락">
+                        <button onclick="restoreQuest({{ todo.pk }})" class="action-btn btn btn-outline-success btn-sm">
                             <i class="bi bi-arrow-counterclockwise"></i> Quest 수락
+                        </button>
+                        <button onclick="deleteQuest({{ todo.pk }})" class="action-btn btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i> 영구 삭제
                         </button>
                     </div>
                 </div>
@@ -125,5 +127,19 @@
         </div>
         {% endif %}
     </div>
+
+    <script>
+    function restoreQuest(todoId) {
+        if(confirm('이 Quest를 다시 수락하시겠습니까?')) {
+            window.location.href = `/todo/restore/${todoId}/`;
+        }
+    }
+
+    function deleteQuest(todoId) {
+        if(confirm('이 Quest를 영구적으로 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+            location.href = `{% url 'todo_delete_permanent' pk=0 %}`.replace('0', todoId);
+        }
+    }
+    </script>
   </body>
 </html>

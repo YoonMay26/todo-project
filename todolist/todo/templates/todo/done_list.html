@@ -156,9 +156,9 @@
 
       <div class="main-content">
         <div class="todo-list-container">
-          {% if dones %}
+          {% if todos %}
           <ul class="list-group">
-            {% for todo in dones %}
+            {% for todo in todos %}
             <li class="list-group-item" data-id="{{ todo.pk }}">
               <div class="todo-item">
                 <div class="todo-content">
@@ -182,10 +182,9 @@
                       {% endif %}
                     </div>
                     <div class="action-buttons">
-                      <button onclick="toggleComplete({{ todo.pk }})" 
-                              class="action-btn btn btn-outline-success btn-sm" title="미완료로 변경">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                      </button>
+                      <a href="{% url 'restore_incomplete' todo.pk %}" class="action-btn btn btn-outline-warning btn-sm">
+                        <i class="bi bi-arrow-counterclockwise"></i> 미완료로 변경
+                      </a>
                       <button onclick="location.href='{% url 'todo_delete' pk=todo.pk %}'" 
                               class="action-btn btn btn-outline-danger btn-sm" title="삭제">
                         <i class="bi bi-trash"></i>
@@ -213,14 +212,21 @@
     </div>
 
     <script>
-        function toggleComplete(todoId) {
-            fetch(`/todo/done/${todoId}/`, {
-                method: 'GET',
+        function restoreToIncomplete(todoId) {
+            fetch(`/todo/restore-incomplete/${todoId}/`, {
+                method: 'POST',
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-CSRFToken': '{{ csrf_token }}'
                 }
-            }).then(() => {
-                location.reload();
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    window.location.href = "{% url 'todo_list' %}";  // todo_list로 리다이렉트
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
         }
 
@@ -243,7 +249,7 @@
                     detailsPanel.innerHTML = `
                         <h3>${data.title}</h3>
                         <div class="detail-content">
-                            <p><strong>설명:</strong><br>${data.description || '설명 없음'}</p>
+                            <p><strong>설명:</strong><br>${data.description || '없음'}</p>
                             <p><strong>생성일:</strong><br>${data.created}</p>
                             <p><strong>완료일:</strong><br>${data.completed_at}</p>
                             <p><strong>마감기한:</strong><br>${data.deadline || '없음'}</p>

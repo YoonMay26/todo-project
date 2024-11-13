@@ -1,0 +1,52 @@
+<div class="level-info">
+    <h2>현재 레벨: Lv. {{ level }}</h2>
+    <p class="title">칭호: {{ title }}</p>
+    <p class="quest-count">완료한 Quest: {{ completed_todos }}개</p>
+    <p class="next-level">다음 레벨까지 {{ next_level_todos }}개의 Quest 남음</p>
+</div>
+
+<!-- 레벨 시스템 설명 추가 -->
+<div class="level-system-info">
+    <h3>레벨 시스템</h3>
+    <ul class="level-list">
+        <li>Lv.1 견습 모험가 (0 ~ 10)</li>
+        <li>Lv.2 열정적인 초보자 (11 ~ 25)</li>
+        <li>Lv.3 꾸준한 실천가 (26 ~ 50)</li>
+        <li>Lv.4 성실한 달성자 (51 ~ 100)</li>
+        <li>Lv.5 숙련된 전문가 (101 ~ 200)</li>
+        <li>Lv.6 대가의 길 (201 ~ 350)</li>
+        <li>Lv.7 전설의 시작 (351 ~ 500)</li>
+        <li>Lv.8 신화의 주인공 (501 ~ 700)</li>
+        <li>Lv.9 불멸의 영웅 (701 ~ 1000)</li>
+        <li>Lv.10 시간의 지배자 (1001 ~ 1500)</li>
+        <li>Lv.11 운명의 조율사 (1501 ~ 2000)</li>
+        <li>Lv.12 현실의 조각가 (2001 ~ 3000)</li>
+        <li>Lv.13 차원의 여행자 (3001 ~ 4000)</li>
+        <li>Lv.14 우주의 관리자 (4001 ~ 5000)</li>
+        <li>Lv.15 무한의 창조자 (5001+)</li>
+    </ul>
+</div>
+
+<style>
+    .level-system-info {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .level-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .level-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .level-list li:last-child {
+        border-bottom: none;
+    }
+</style> 

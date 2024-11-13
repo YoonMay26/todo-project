@@ -13,7 +13,7 @@ urlpatterns = [
     path('trash/', views.trash_list, name='trash_list'),
     path('restore/<int:pk>/', views.todo_restore, name='todo_restore'),
     path('reorder/', views.reorder_todos, name='reorder_todos'),
-    path('bulk-delete/', views.bulk_delete, name='bulk_delete'),
+    path('todo/delete-multiple/', views.todo_delete_multiple, name='todo_delete_multiple'),
     path('detail/<int:pk>/', views.todo_detail_json, name='todo_detail_json'),
     path('user_add/', views.user_add, name='user_add'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
@@ -22,4 +22,10 @@ urlpatterns = [
     redirect_authenticated_user=True,
     extra_context={'show_register_link': True}
         ), name='login'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('todo/restore/<int:pk>/', views.todo_restore, name='todo_restore'),
+    path('todo/delete-permanent/<int:pk>/', views.todo_delete_permanent, name='todo_delete_permanent'),
+    path('todo/delete-multiple/', views.todo_delete_multiple, name='todo_delete_multiple'),
+    path('todo/restore-incomplete/<int:pk>/', views.restore_incomplete, name='restore_incomplete'),
 ]

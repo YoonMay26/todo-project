@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>프로필</h2>
+        <div class="card">
+            <div class="card-body">
+                <img src="{{ user.character_image }}" alt="캐릭터 이미지" class="img-fluid rounded-circle mb-3 profile-image">
+                <h3>{{ user.username }}</h3>
+                <p><strong>ID:</strong> {{ user.username }}</p>
+                <p><strong>별명:</strong> {{ user.nickname }}</p>
+                <p><strong>캐릭터:</strong> {{ user.get_character_display }}</p>
+                <p><strong>가입일:</strong> {{ user.date_joined|date:"Y년 m월 d일" }}</p>
+                <a href="{% url 'profile_edit' %}" class="btn btn-primary">프로필 수정</a>
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary">TODO 목록으로 돌아가기</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
