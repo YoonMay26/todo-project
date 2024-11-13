@@ -10,24 +10,24 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth import login, authenticate
 from django.urls import reverse
 from django.contrib import messages
+from datetime import timedelta
+from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def todo_list(request):
     sort = request.GET.get('sort', '')
-    todos = Todo.objects.filter(complete=False, is_deleted=False)
+    todos = Todo.objects.filter(
+        user=request.user,
+        complete=False,
+        is_deleted=False
+    )
     
     if sort == 'importance':
         todos = todos.order_by('-important', 'created')
     elif sort == 'deadline':
-        todos = todos.order_by(
-            Case(
-                When(deadline__isnull=True, then=Value(1)),
-                default=Value(0),
-                output_field=IntegerField(),
-            ),
-            'deadline',
-            '-important'
-        )
+        todos = todos.order_by('deadline', '-important')
     elif sort == 'created':
         todos = todos.order_by('created')
     else:
@@ -36,12 +36,13 @@ def todo_list(request):
     return render(request, 'todo/todo_list.html', {'todos': todos})
 
 
+@login_required
 def todo_post(request):
     if request.method == "POST":
         form = TodoForm(request.POST)
         if form.is_valid():
             todo = form.save(commit=False)
-            todo.created = timezone.now()
+            todo.user = request.user
             todo.save()
             return redirect('todo_list')
     else:
@@ -49,59 +50,59 @@ def todo_post(request):
     return render(request, 'todo/todo_post.html', {'form': form})
 
 
+@login_required
 def done_list(request):
-    dones = Todo.objects.filter(complete=True, is_deleted=False)
-    return render(request, 'todo/done_list.html', {'dones': dones})
+    todos = Todo.objects.filter(
+        user=request.user,
+        complete=True
+    ).order_by('-completed_at')
+    return render(request, 'todo/done_list.html', {'todos': todos})
 
 
+@login_required
 def todo_done(request, pk):
-    todo = Todo.objects.get(id=pk)
+    todo = get_object_or_404(Todo, pk=pk, user=request.user)
     todo.complete = not todo.complete
     todo.completed_at = timezone.now() if todo.complete else None
     todo.save()
-    
-    referer = request.META.get('HTTP_REFERER')
-    if referer:
-        return HttpResponseRedirect(referer)
-    return HttpResponseRedirect(reverse('todo_list'))
+    return redirect('todo_list')
 
 
+@login_required
 def todo_edit(request, pk):
-    todo = get_object_or_404(Todo, pk=pk)
-    
+    todo = get_object_or_404(Todo, pk=pk, user=request.user)
     if request.method == "POST":
         form = TodoForm(request.POST, instance=todo)
         if form.is_valid():
             todo = form.save()
             return redirect('todo_list')
     else:
-        # 기존 데이터로 폼을 초기화
         form = TodoForm(instance=todo)
-        # datetime-local 입력을 위한 형식 변환
-        if todo.deadline:
-            form.initial['deadline'] = todo.deadline.strftime('%Y-%m-%dT%H:%M')
-    
     return render(request, 'todo/todo_edit.html', {
         'form': form,
-        'todo': todo
+        'todo': todo  # todo 객체도 템플릿으로 전달
     })
 
 
-# 삭제 뷰 새로 추가
+@login_required
 def todo_delete(request, pk):
-    todo = Todo.objects.get(id=pk)
+    todo = get_object_or_404(Todo, pk=pk, user=request.user)
     todo.is_deleted = True
     todo.deleted_at = timezone.now()
     todo.save()
     return redirect('todo_list')
 
 
+@login_required
 def trash_list(request):
-    # is_deleted가 True인 항목만 가져오기
-    todos = Todo.objects.filter(is_deleted=True).order_by('-deleted_at')
+    todos = Todo.objects.filter(
+        user=request.user,
+        is_deleted=True
+    ).order_by('-deleted_at')
     return render(request, 'todo/trash_list.html', {'todos': todos})
 
 
+@login_required
 def todo_restore(request, pk):
     todo = Todo.objects.get(id=pk)
     todo.is_deleted = False
@@ -180,3 +181,96 @@ def login_view(request):
             # 로그인 실패 메시지 추가
             return render(request, 'login.html', {'error': '아이디 또는 비밀번호가 올바르지 않습니다.'})
     return render(request, 'login.html')
+
+
+@login_required
+def todo_stats(request):
+    today = timezone.now().date()
+    week_ago = today - timedelta(days=6)
+    month_ago = today - timedelta(days=29)
+
+    # 현재 사용자의 통계만 계산
+    daily_completed = Todo.objects.filter(
+        user=request.user,
+        complete=True,
+        completed_at__date=today
+    ).count()
+
+    weekly_completed = Todo.objects.filter(
+        user=request.user,
+        complete=True,
+        completed_at__date__gte=week_ago,
+        completed_at__date__lte=today
+    ).count()
+
+    monthly_completed = Todo.objects.filter(
+        user=request.user,
+        complete=True,
+        completed_at__date__gte=month_ago,
+        completed_at__date__lte=today
+    ).count()
+
+    total_completed = Todo.objects.filter(
+        user=request.user,
+        complete=True
+    ).count()
+
+    # 남은 퀘스트 정보
+    remaining_quests = Todo.objects.filter(
+        user=request.user,
+        complete=False,
+        is_deleted=False
+    )
+    remaining_total = remaining_quests.count()
+    remaining_important = remaining_quests.filter(important__gte=4).count()
+    remaining_today = remaining_quests.filter(deadline__date=today).count()
+
+    # 레벨 계산
+    def get_level_info(total_completed):
+        levels = [
+            (0, 10, 1, "견습 모험가"),
+            (11, 25, 2, "열정적인 초보자"),
+            (26, 50, 3, "꾸준한 실천가"),
+            (51, 100, 4, "성실한 달성자"),
+            (101, 200, 5, "숙련된 전문가"),
+            (201, 350, 6, "대가의 길"),
+            (351, 500, 7, "전설의 시작"),
+            (501, 700, 8, "신화의 주인공"),
+            (701, 1000, 9, "불멸의 영웅"),
+            (1001, 1500, 10, "시간의 지배자"),
+            (1501, 2000, 11, "운명의 조율사"),
+            (2001, 3000, 12, "현실의 조각가"),
+            (3001, 4000, 13, "차원의 여행자"),
+            (4001, 5000, 14, "우주의 관리자"),
+            (5001, float('inf'), 15, "무한의 창조자"),
+        ]
+
+        for min_count, max_count, level, title in levels:
+            if min_count <= total_completed <= max_count:
+                next_level = level + 1 if level < 15 else 15
+                next_title = levels[level][3] if level < 15 else "무한의 창조자"
+                progress = (total_completed - min_count) / (max_count - min_count) * 100
+                remaining = max_count - total_completed
+                return {
+                    'level': level,
+                    'title': title,
+                    'next_level': next_level,
+                    'next_title': next_title,
+                    'progress': min(progress, 100),
+                    'remaining': remaining
+                }
+
+    level_info = get_level_info(total_completed)
+
+    context = {
+        'daily_completed': daily_completed,
+        'weekly_completed': weekly_completed,
+        'monthly_completed': monthly_completed,
+        'total_completed': total_completed,
+        'remaining_total': remaining_total,
+        'remaining_important': remaining_important,
+        'remaining_today': remaining_today,
+        'level_info': level_info,
+    }
+
+    return render(request, 'todo/todo_stats.html', context)

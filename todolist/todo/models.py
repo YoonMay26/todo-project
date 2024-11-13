@@ -1,7 +1,13 @@
 from django.db import models
-from django.utils import timezone
+from django.conf import settings
+from django.contrib.auth.models import User
 
 class Todo(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True
+    )
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)

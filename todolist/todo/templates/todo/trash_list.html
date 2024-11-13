@@ -85,7 +85,7 @@
   <body>
     <div class="container">
         <div class="header-container">
-            <h1><i class="bi bi-trash"></i> 휴지통</h1>
+            <h1><i class="bi bi-trash"></i> 미수락 Quest</h1>
             <a href="{% url 'todo_list' %}" class="nav-btn">
                 <i class="bi bi-arrow-left"></i> 목록으로 돌아가기
             </a>
@@ -105,13 +105,13 @@
                         {% endif %}
                         <span class="deleted-date">
                             <i class="bi bi-calendar-x"></i> 
-                            {{ todo.deleted_at|date:"Y-m-d H:i" }} 삭제됨
+                            {{ todo.deleted_at|date:"Y-m-d H:i" }} 미수락됨
                         </span>
                     </div>
                     <div class="action-buttons">
                         <button onclick="location.href='{% url 'todo_restore' pk=todo.pk %}'" 
-                                class="action-btn btn btn-outline-primary btn-sm" title="복원">
-                            <i class="bi bi-arrow-counterclockwise"></i> 복원
+                                class="action-btn btn btn-outline-primary btn-sm" title="수락">
+                            <i class="bi bi-arrow-counterclockwise"></i> Quest 수락
                         </button>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
         {% else %}
         <div class="empty-message">
             <i class="bi bi-trash" style="font-size: 2rem; color: #6c757d;"></i>
-            <p class="mt-3">휴지통이 비어있습니다.</p>
+            <p class="mt-3">미수락된 Quest가 없습니다.</p>
         </div>
         {% endif %}
     </div>

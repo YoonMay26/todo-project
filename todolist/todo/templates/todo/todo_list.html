@@ -400,103 +400,444 @@
         background-color: #dc3545;
         color: white;
       }
+      .empty-message {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin: 2rem 0;
+      }
+
+      .empty-message p {
+        color: #666;
+        font-size: 1.2rem;
+        margin: 1rem 0;
+      }
+
+      .empty-message .btn {
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .empty-message .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
+      }
+
+      .empty-message i {
+        margin-bottom: 1rem;
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .logout-btn {
+        padding: 8px 20px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #9b6b9d, #805d93);
+        color: white;
+        border: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(155, 107, 157, 0.2);
+      }
+
+      .logout-btn:hover {
+        background: linear-gradient(135deg, #805d93, #9b6b9d);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(155, 107, 157, 0.3);
+        color: white;
+        text-decoration: none;
+      }
+
+      .logout-btn i {
+        font-size: 1.1rem;
+      }
+
+      /* 기존 헤더 컨테이너 마진 수정 */
+      .header-container {
+        margin-bottom: 1.5rem;
+      }
+
+      .title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: white;
+        color: #4A90E2;
+        border: 1px solid #4A90E2;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .nav-btn:hover {
+        background-color: #4A90E2;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      .header-container {
+        margin-bottom: 2rem;
+      }
+
+      .title-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: white;
+        color: #4A90E2;
+        border: 1px solid #4A90E2;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .nav-btn:hover {
+        background-color: #4A90E2;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      .success-btn {
+        color: #28a745;
+        border-color: #28a745;
+      }
+
+      .success-btn:hover {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .danger-btn {
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      .danger-btn:hover {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.8rem;
+      }
+
+      .primary-btn {
+        background-color: #4A90E2;
+        color: white;
+      }
+
+      .primary-btn:hover {
+        background-color: #357ABD;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .success-btn {
+        background-color: #2ecc71;
+        color: white;
+      }
+
+      .success-btn:hover {
+        background-color: #27ae60;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .danger-btn {
+        background-color: #e74c3c;
+        color: white;
+      }
+
+      .danger-btn:hover {
+        background-color: #c0392b;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .achievement-btn {
+        background-color: #f1c40f;
+        color: white;
+      }
+
+      .achievement-btn:hover {
+        background-color: #f39c12;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .logout-btn {
+        background-color: #95a5a6;
+        color: white;
+      }
+
+      .logout-btn:hover {
+        background-color: #7f8c8d;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* 버튼에 그림자 효과 추가 */
+      .nav-btn {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .nav-btn:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      }
+
+      .header-container {
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: white;
+        color: #666;
+        border: 1px solid #ddd;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #f8f9fa;
+        border-color: #666;
+        color: #333;
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      .nav-btn i {
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn:hover i {
+        transform: scale(1.1);
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem 0;
+      }
+
+      .nav-buttons-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1.5rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: #333;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background-color: white;
+        color: #666;
+        border: 1px solid #ddd;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #f8f9fa;
+        border-color: #666;
+        color: #333;
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+
+      .nav-btn i {
+        font-size: 1.1rem;
+        transition: all 0.2s ease;
+      }
+
+      .nav-btn:hover i {
+        transform: scale(1.1);
+      }
     </style>
   </head>
   <body>
   <div class="container-fluid">
+    <div class="top-nav">
+      <a href="{% url 'logout' %}" class="logout-btn">
+        <i class="bi bi-box-arrow-right"></i>
+        로그아웃
+      </a>
+    </div>
+
     <div class="header-container">
-      <h1>TODO 목록 앱</h1>
-      <div class="action-group">
-          <a href="{% url 'todo_post' %}" class="add-todo-btn nav-btn">
-              <i class="bi bi-plus-circle"></i> 새로운 TODO
+      <div class="title-section">
+        <h1>나의 Quest 목록</h1>
+        <div class="header-buttons">
+          <a href="{% url 'todo_post' %}" class="nav-btn">
+            <i class="bi bi-plus-circle-fill" style="color: #4A90E2;"></i> 새 Quest
           </a>
-          <a href="{% url 'done_list' %}" class="done-btn nav-btn">
-              <i class="bi bi-check2-circle"></i> 완료한 목록
+          <a href="{% url 'done_list' %}" class="nav-btn">
+            <i class="bi bi-check-circle" style="color: #28a745;"></i> 완료한 Quest
           </a>
-          <a href="{% url 'trash_list' %}" class="trash-btn nav-btn">
-              <i class="bi bi-trash"></i> 휴지통
+          <a href="{% url 'trash_list' %}" class="nav-btn">
+            <i class="bi bi-trash" style="color: #dc3545;"></i> 미수락 Quest
           </a>
-          <form method="post" action="{% url 'logout' %}" style="display: inline;">
-              {% csrf_token %}
-              <button type="submit" class="nav-btn logout-btn">
-                  <i class="bi bi-box-arrow-right"></i> 로그아웃
-              </button>
-          </form>
+          <a href="{% url 'todo_stats' %}" class="nav-btn">
+            <i class="bi bi-trophy" style="color: #f39c12;"></i> Achievement
+          </a>
+        </div>
       </div>
+    </div>
   </div>
-</div>
-      </div>
-    </div>
 
-    <div class="sort-group">
-      <button class="sort-btn" onclick="sortTodos(this, 'importance')">
-        <i class="bi bi-star"></i> 중요도순
-      </button>
-      <button class="sort-btn" onclick="sortTodos(this, 'deadline')">
-        <i class="bi bi-clock"></i> 마감일순
-      </button>
-      <button class="sort-btn" onclick="sortTodos(this, 'created')">
-        <i class="bi bi-calendar"></i> 생성일순
-      </button>
-    </div>
+  <div class="sort-group">
+    <button class="sort-btn" onclick="sortTodos(this, 'importance')">
+      <i class="bi bi-star"></i> 중요도순
+    </button>
+    <button class="sort-btn" onclick="sortTodos(this, 'deadline')">
+      <i class="bi bi-clock"></i> 마감일순
+    </button>
+    <button class="sort-btn" onclick="sortTodos(this, 'created')">
+      <i class="bi bi-calendar"></i> 생성일순
+    </button>
+  </div>
 
-    <div class="bulk-actions">
-      <span class="selected-count">0개 선택됨</span>
-      <button class="btn btn-danger btn-sm" onclick="bulkDelete()">
-        <i class="bi bi-trash"></i> 선택 항목 삭제
-      </button>
-    </div>
+  <div class="bulk-actions">
+    <span class="selected-count">0개 선택됨</span>
+    <button class="btn btn-danger btn-sm" onclick="bulkDelete()">
+      <i class="bi bi-trash"></i> 선택 항목 삭제
+    </button>
+  </div>
 
-    <div class="main-content">
-      <div class="todo-list-container">
-        <ul class="list-group todo-list-sortable">
+  <div class="main-content">
+    <div class="todo-list-container">
+      {% if todos %}
+      <ul class="list-group" id="todo-list">
           {% for todo in todos %}
           <li class="list-group-item" data-id="{{ todo.pk }}">
-            <div class="todo-item">
-              <input type="checkbox" class="todo-checkbox" onchange="handleCheckbox(this)">
-              <i class="bi bi-grip-vertical drag-handle"></i>
-              <div class="todo-content">
-                <div class="todo-main-content">
-                  <span class="todo-title">{{ todo.title }}</span>
-                  {% if todo.important %}
-                    <span class="important-stars">
-                      {% for i in ''|ljust:todo.important %}★{% endfor %}
-                    </span>
-                  {% endif %}
-                  {% if todo.deadline %}
-                    <span class="deadline">
-                      <i class="bi bi-clock"></i> 
-                      {{ todo.deadline|date:"Y-m-d H:i" }}
-                    </span>
-                  {% endif %}
-                </div>
-                <div class="action-buttons">
-                  <button onclick="location.href='{% url 'todo_done' pk=todo.pk %}'" 
-                          class="action-btn btn btn-outline-success btn-sm" title="완료">
-                    <i class="bi bi-check-lg"></i>
-                  </button>
-                  <button onclick="location.href='{% url 'todo_edit' pk=todo.pk %}'" 
-                          class="action-btn btn btn-outline-primary btn-sm" title="수정">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button onclick="location.href='{% url 'todo_delete' pk=todo.pk %}'" 
-                          class="action-btn btn btn-outline-danger btn-sm" title="삭제">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                  <i class="bi bi-chevron-right todo-arrow" onclick="showDetails('{{ todo.pk }}')"></i>
-                </div>
+              <div class="todo-item">
+                  <input type="checkbox" class="todo-checkbox" onchange="handleCheckbox(this)">
+                  <i class="bi bi-grip-vertical drag-handle"></i>
+                  <div class="todo-content">
+                      <div class="todo-main-content">
+                          <span class="todo-title">{{ todo.title }}</span>
+                          {% if todo.important %}
+                              <span class="important-stars">
+                                  {% for i in ''|ljust:todo.important %}★{% endfor %}
+                              </span>
+                          {% endif %}
+                          {% if todo.deadline %}
+                              <span class="deadline">
+                                  <i class="bi bi-clock"></i> 
+                                  {{ todo.deadline|date:"Y-m-d H:i" }}
+                              </span>
+                          {% endif %}
+                      </div>
+                      <div class="action-buttons">
+                          <button onclick="location.href='{% url 'todo_done' pk=todo.pk %}'" 
+                                  class="action-btn btn btn-outline-success btn-sm" title="완료">
+                              <i class="bi bi-check-lg"></i>
+                          </button>
+                          <button onclick="location.href='{% url 'todo_edit' pk=todo.pk %}'" 
+                                  class="action-btn btn btn-outline-primary btn-sm" title="수정">
+                              <i class="bi bi-pencil"></i>
+                          </button>
+                          <button onclick="location.href='{% url 'todo_delete' pk=todo.pk %}'" 
+                                  class="action-btn btn btn-outline-danger btn-sm" title="삭제">
+                              <i class="bi bi-trash"></i>
+                          </button>
+                          <i class="bi bi-chevron-right todo-arrow" onclick="showDetails('{{ todo.pk }}')"></i>
+                      </div>
+                  </div>
               </div>
-            </div>
           </li>
           {% endfor %}
-        </ul>
+      </ul>
+      {% else %}
+      <div class="empty-message">
+          <i class="bi bi-journal-plus" style="font-size: 2rem; color: #4A90E2;"></i>
+          <p class="mt-3">새로운 Quest를 시작해보세요!</p>
+          <button onclick="location.href='{% url 'todo_post' %}'" 
+                  class="btn btn-outline-primary mt-2">
+              <i class="bi bi-plus-lg"></i> 새로운 Quest 추가하기
+          </button>
       </div>
+      {% endif %}
+    </div>
 
-      <div class="details-panel">
-        <!-- 상세 정보가 여기에 동적으로 로드됩니다 -->
-      </div>
+    <div class="details-panel">
+      <!-- 상세 정보가 여기에 동적으로 로드됩니다 -->
     </div>
   </div>
+</div>
 
   <script>
     // Sortable 초기화 (자동으로 활성화)
@@ -574,7 +915,7 @@
             <div class="detail-content">
               <p><strong>설명:</strong><br>${data.description || '설명 없음'}</p>
               <p><strong>생성일:</strong><br>${data.created}</p>
-              <p><strong>마감기��:</strong><br>${data.deadline || '없음'}</p>
+              <p><strong>마감기한:</strong><br>${data.deadline || '없음'}</p>
               <p><strong>중요도:</strong><br>${'★'.repeat(data.important)}</p>
             </div>
           `;
@@ -606,7 +947,7 @@
     }
 
     function sortTodos(button, criterion) {
-        // 모든 정렬 버튼의 active 클래스 제거
+        // 든 정렬 버튼의 active 클래스 제거
         document.querySelectorAll('.sort-btn').forEach(btn => {
             btn.classList.remove('active');
         });
