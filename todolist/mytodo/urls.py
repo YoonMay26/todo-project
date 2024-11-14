@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from todo import views as todo_views  
+from todo import views as todo_views
 
 
 urlpatterns = [
+    path('', todo_views.index, name='index'),
     path('admin/', admin.site.urls),
     path('todo/', include('todo.urls')),
-    path('', auth_views.LoginView.as_view(
+    path('login/', auth_views.LoginView.as_view(
         template_name='todo/login.html',
         extra_context={'show_register_link': True},
         redirect_authenticated_user=True
