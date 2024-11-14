@@ -5,18 +5,35 @@
     <title>회원가입</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: url('/static/images/todo_list_bg.png');
+            background-size: cover;
+            background-position: center;
+        }
         .character-selection img {
             width: 75px;
             height: 100px;
             object-fit: cover;
             margin: 10px;
             cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.3s;
         }
         .character-selection input[type="radio"] {
             display: none;
         }
         .character-selection input[type="radio"]:checked + img {
-            border: 3px solid #007bff;
+            border-color: #6f42c1;
+            box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+        }
+        .btn-primary {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .btn-primary:hover {
+            background-color: #5a32a3;
+            border-color: #5a32a3;
         }
     </style>
 </head>

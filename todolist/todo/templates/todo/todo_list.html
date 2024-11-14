@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Quest 목록</title>
@@ -152,8 +153,8 @@
 
         .nav-btn:hover {
             background-color: #f8f9fa;
-            border-color: #666;
-            color: #333;
+            border-color: #6c5ce7;
+            color: #6c5ce7;
             transform: translateY(-1px);
         }
 
@@ -341,6 +342,81 @@
         .level-up-message.show {
             opacity: 1;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+        
+        .empty-state p {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 0 0 1rem 0;
+        }
+        
+        .empty-state .btn {
+            padding: 0.5rem 1.5rem;
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+        }
+        
+        .empty-state .btn:hover {
+            background-color: #6c5ce7;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(108, 92, 231, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .empty-quest-message {
+            text-align: center;
+            padding: 3rem;
+            color: #6c5ce7;
+            font-size: 1.2rem;
+            font-weight: 500;
+            background: rgba(108, 92, 231, 0.05);
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .sub-nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: white;
+            color: #666;
+            border: 1px solid #ddd;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        .nav-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #6c5ce7;
+            color: #6c5ce7;
+            transform: translateY(-1px);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
@@ -348,7 +424,7 @@
     <div class="container">
         <!-- Top Navigation -->
         <div class="top-nav">
-            <h1>나의 Quest 목록</h1>
+            <h1>👾 My Quest List</h1>
             <div class="top-buttons">
                 <a href="{% url 'profile' %}" class="nav-btn">
                     <i class="bi bi-person-circle" style="color: #6c5ce7;"></i> Profile
@@ -382,7 +458,7 @@
                 </div>
             </div>
 
-            <!-- Quest List -->
+            <!-- Quest Container -->
             <div class="quest-container">
                 <div class="list-header">
                     <div class="sort-buttons">
@@ -396,12 +472,12 @@
                         </button>
                         <button class="sort-button {% if sort == 'created' %}active{% endif %}" 
                                 onclick="location.href='?sort=created'">
-                            <i class="bi bi-clock"></i> 등록일순
+                            <i class="bi bi-clock"></i> 생성일순
                         </button>
                     </div>
                     <div class="nav-buttons">
                         <a href="{% url 'todo_post' %}" class="nav-btn">
-                            <i class="bi bi-plus-circle-fill" style="color: #4A90E2;"></i> 새 Quest
+                            <i class="bi bi-plus-circle-fill" style="color: #6c5ce7;"></i> 새 Quest
                         </a>
                         <a href="{% url 'done_list' %}" class="nav-btn">
                             <i class="bi bi-check-circle" style="color: #28a745;"></i> 완료한 Quest
@@ -462,7 +538,7 @@
                                 </div>
                                 <div class="todo-details" style="display: none;">
                                     <div class="details-content">
-                                        <p><strong>설명:</strong><br>{{ todo.description|default:"설명 없음" }}</p>
+                                        <p><strong>설명:</strong><br>{{ todo.description|default:"없음" }}</p>
                                         <p><strong>생성일:</strong><br>{{ todo.created|date:"Y-m-d H:i" }}</p>
                                         <p><strong>마감기한:</strong><br>{{ todo.deadline|date:"Y-m-d H:i"|default:"없음" }}</p>
                                         <p><strong>중요도:</strong><br>{{ todo.important|default:"0" }} / 5</p>
@@ -471,6 +547,10 @@
                             </li>
                             {% endfor %}
                         </ul>
+                        {% else %}
+                        <div class="empty-quest-message">
+                            새로운 Quest를 시작해보세요! 🚀
+                        </div>
                         {% endif %}
                     </div>
                 </div>
