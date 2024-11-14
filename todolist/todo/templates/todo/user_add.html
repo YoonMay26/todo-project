@@ -61,7 +61,11 @@
                 <div class="character-selection">
                     {% for radio in form.character %}
                         <label>
-                            {{ radio.tag }}
+                            {% if forloop.first %}
+                                {{ radio.tag|add_checked_attribute }}
+                            {% else %}
+                                {{ radio.tag }}
+                            {% endif %}
                             <img src="{{ form.character_images|get_item:radio.data.value }}" alt="{{ radio.choice_label }}">
                         </label>
                     {% endfor %}

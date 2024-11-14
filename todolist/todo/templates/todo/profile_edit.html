@@ -48,12 +48,14 @@
                 <label>캐릭터:</label>
                 <div>
                     {% for radio in form.character %}
-                        <label class="character-option">
-                            {{ radio.tag }}
-                            <img src="{{ character_images|get_item:radio.data.value }}" alt="{{ radio.choice_label }}" class="character-image">
-                            <br>
-                            {{ radio.choice_label }}
-                        </label>
+                        {% if radio.data.value != '' %}  <!-- 빈 값(default 옵션) 제외 -->
+                            <label class="character-option">
+                                {{ radio.tag }}
+                                <img src="{{ character_images|get_item:radio.data.value }}" alt="{{ radio.choice_label }}" class="character-image">
+                                <br>
+                                {{ radio.choice_label }}
+                            </label>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 {% if form.character.errors %}
