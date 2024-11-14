@@ -60,9 +60,27 @@ def todo_list(request):
     )
     
     if sort == 'importance':
-        todos = todos.order_by('-important', 'created')
+        todos = todos.annotate(
+            importance_order=Case(
+                When(important=1, then=5),  # 1 -> 5점
+                When(important=2, then=4),  # 2 -> 4점
+                When(important=3, then=3),  # 3 -> 3점
+                When(important=4, then=2),  # 4 -> 2점
+                When(important=5, then=1),  # 5 -> 1점
+                When(important__isnull=True, then=0),  # null -> 0점
+                default=0,
+                output_field=IntegerField(),
+            )
+        ).order_by('-importance_order', 'created')
     elif sort == 'deadline':
-        todos = todos.order_by('deadline', '-important')
+        todos = todos.order_by(
+            Case(
+                When(deadline__isnull=True, then=1),
+                default=0,
+            ),
+            'deadline',
+            '-important'
+        )
     elif sort == 'created':
         todos = todos.order_by('created')
     else:
