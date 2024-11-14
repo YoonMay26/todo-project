@@ -456,3 +456,6 @@ def restore_incomplete(request, pk):
     todo.completed_at = None
     todo.save()
     return redirect('done_list')
+
+def index(request):
+    return render(request, 'todo/index.html')
