@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Todo
 from .forms import TodoForm, ProfileEditForm 
-from .forms import TodoForm, ProfileEditForm 
 from django.db.models import Case, When, Value, IntegerField
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
