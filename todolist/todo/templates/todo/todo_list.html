@@ -510,12 +510,19 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="todo-main-content">
                                             <input type="checkbox" class="todo-checkbox mr-2" data-id="{{ todo.pk }}">
-                                            <span class="todo-title">{{ todo.title }}</span>
-                                            {% if todo.important %}
-                                            <span class="important-stars">
-                                                {% for i in ''|ljust:todo.important %}★{% endfor %}
-                                            </span>
-                                            {% endif %}
+                                            <div class="todo-info">
+                                                <div class="todo-title">
+                                                    {{ todo.title }}
+                                                    <span class="todo-important" style="color: #ffd700; margin-left: 8px;">
+                                                        {% if todo.important == 1 %}★★★★★
+                                                        {% elif todo.important == 2 %}★★★★
+                                                        {% elif todo.important == 3 %}★★★
+                                                        {% elif todo.important == 4 %}★★
+                                                        {% elif todo.important == 5 %}★
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
                                             {% if todo.deadline %}
                                             <span class="deadline">
                                                 <i class="bi bi-clock"></i> {{ todo.deadline|date:"Y-m-d H:i" }}
@@ -541,7 +548,16 @@
                                         <p><strong>설명:</strong><br>{{ todo.description|default:"없음" }}</p>
                                         <p><strong>생성일:</strong><br>{{ todo.created|date:"Y-m-d H:i" }}</p>
                                         <p><strong>마감기한:</strong><br>{{ todo.deadline|date:"Y-m-d H:i"|default:"없음" }}</p>
-                                        <p><strong>중요도:</strong><br>{{ todo.important|default:"0" }} / 5</p>
+                                        <p><strong>중요도:</strong><br>
+                                            <span class="important-stars">
+                                                {% if todo.important == 1 %}★★★★★
+                                                {% elif todo.important == 2 %}★★★★
+                                                {% elif todo.important == 3 %}★★★
+                                                {% elif todo.important == 4 %}★★
+                                                {% elif todo.important == 5 %}★
+                                                {% endif %}
+                                            </span>
+                                        </p>
                                     </div>
                                 </div>
                             </li>
@@ -719,7 +735,7 @@
         }
 
         function removeCelebrationEffects() {
-            // 모든 꽃가루 효과 중지
+            // 모든 꽃가루 효과 지
             if (window.confettiInterval) {
                 clearInterval(window.confettiInterval);
             }

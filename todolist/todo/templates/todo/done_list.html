@@ -173,11 +173,14 @@
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="todo-main-content">
                       <span class="todo-title">{{ todo.title }}</span>
-                      {% if todo.important %}
-                        <span class="important-stars">
-                          {% for i in ''|ljust:todo.important %}★{% endfor %}
-                        </span>
-                      {% endif %}
+                      <span class="important-stars">
+                        {% if todo.important == 1 %}★★★★★
+                        {% elif todo.important == 2 %}★★★★
+                        {% elif todo.important == 3 %}★★★
+                        {% elif todo.important == 4 %}★★
+                        {% elif todo.important == 5 %}★
+                        {% endif %}
+                      </span>
                       <span class="completed-date">
                         <i class="bi bi-check2-circle"></i> 
                         {{ todo.completed_at|date:"Y-m-d H:i" }} 완료
@@ -253,6 +256,13 @@
             fetch(`/todo/detail/${todoId}/`)
                 .then(response => response.json())
                 .then(data => {
+                    let stars = '';
+                    if (data.important === 1) stars = '★★★★★';
+                    else if (data.important === 2) stars = '★★★★';
+                    else if (data.important === 3) stars = '★★★';
+                    else if (data.important === 4) stars = '★★';
+                    else if (data.important === 5) stars = '★';
+
                     detailsPanel.innerHTML = `
                         <h3>${data.title}</h3>
                         <div class="detail-content">
@@ -260,7 +270,7 @@
                             <p><strong>생성일:</strong><br>${data.created}</p>
                             <p><strong>완료일:</strong><br>${data.completed_at}</p>
                             <p><strong>마감기한:</strong><br>${data.deadline || '없음'}</p>
-                            <p><strong>중요도:</strong><br>${'★'.repeat(data.important)}</p>
+                            <p><strong>중요도:</strong><br><span style="color: #ffd700;">${stars}</span></p>
                         </div>
                     `;
                     

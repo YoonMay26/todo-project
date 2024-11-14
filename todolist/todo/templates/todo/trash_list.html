@@ -98,11 +98,14 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="todo-content">
                         <span class="todo-title">{{ todo.title }}</span>
-                        {% if todo.important %}
-                            <span class="important-stars">
-                                {% for i in ''|ljust:todo.important %}★{% endfor %}
-                            </span>
-                        {% endif %}
+                        <span class="important-stars" style="color: #ffd700;">
+                            {% if todo.important == 1 %}★★★★★
+                            {% elif todo.important == 2 %}★★★★
+                            {% elif todo.important == 3 %}★★★
+                            {% elif todo.important == 4 %}★★
+                            {% elif todo.important == 5 %}★
+                            {% endif %}
+                        </span>
                         <span class="deleted-date">
                             <i class="bi bi-calendar-x"></i> 
                             {{ todo.deleted_at|date:"Y-m-d H:i" }} 미수락됨
